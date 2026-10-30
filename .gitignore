@@ -1,4 +1,4 @@
 # Tencent Cloud EdgeOne
 .env
 .edgeone/*
-.tef_dist/*
+.tef_dist/*api-proxy-fc.zip

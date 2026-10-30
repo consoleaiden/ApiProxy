@@ -1,0 +1,11 @@
+{
+  "name": "api-proxy",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "API 代理加速：阿里云 FC Web 函数 + EdgeOne 边缘函数双形态",
+  "scripts": {
+    "start": "node fc-server.js",
+    "test": "node test/local-test.mjs"
+  }
+}

@@ -24,7 +24,20 @@ edge-functions/
 └── _lib.js           # 核心代理逻辑 + 首页渲染
 ```
 
-## 部署步骤（腾讯 EdgeOne Pages 国际版，免费）
+## 部署步骤 A：阿里云函数计算 FC（推荐，无需自有域名）
+
+> 免费额度（所有用户每月）：100 万次调用 + 40 万 CU·s。函数 URL（fcapp.run）长期公开，无需备案、无需自有域名，国内访问快。
+> 注意：免费额度不含**公网出流量**（0.8 元/GB），纯 JSON 接口个人使用每月约几毛到几元，账户保持少量余额即可。
+
+1. 注册阿里云并完成实名认证，开通[函数计算 FC 3.0](https://fcnext.console.aliyun.com)
+2. 控制台「创建函数」→ 类型选 **Web 函数** → 运行环境 **Node.js 18** 或以上 → 地域就近选择（如华东1-杭州）
+3. 代码上传方式选「上传 zip 包」，上传仓库中的 `api-proxy-fc.zip`（内容：`fc-server.js` + `edge-functions/` + `package.json`）
+4. 启动命令填 `node fc-server.js`，监听端口 9000，内存 512MB，请求超时 60 秒 → 创建
+5. 函数详情页 → 「函数 URL」→ 开启公网访问，得到 `https://xxxx.<region>.fcapp.run` 长期有效的公网地址
+6. 用法同上：`https://xxxx.fcapp.run/?url=<源站地址>`
+7. （可选）配置环境变量 `PROXY_TOKEN` 开启鉴权，防止代理被滥用
+
+## 部署步骤 B：腾讯 EdgeOne Pages（免费，但默认域名带签名）
 
 > 仓库地址：https://github.com/consoleaiden/ApiProxy
 > 注意：CLI 直传（`edgeone pages deploy`）创建的项目，默认域名（*.edgeone.dev / *.edgeone.cool）是带时效签名的预览链接，无法公开调用；必须用下面的 Git 集成方式创建项目，或绑定自定义域名。
