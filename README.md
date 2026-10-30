@@ -24,19 +24,28 @@ edge-functions/
 └── _lib.js           # 核心代理逻辑 + 首页渲染
 ```
 
-## 部署步骤（腾讯 EdgeOne Pages，免费）
+## 部署步骤（腾讯 EdgeOne Pages 国际版，免费）
 
-1. 代码托管：本仓库推送到 Gitee（EdgeOne 控制台 Git 集成目前支持 GitHub/GitLab/Bitbucket，Gitee 仓库可通过 CLI 方式部署，或镜像到 GitHub）
-2. 注册并登录 [EdgeOne Pages 控制台](https://console.cloud.tencent.com/edgeone/pages)
-3. 方式一（Git 集成）：把仓库镜像到 GitHub → 控制台「创建项目 → 导入 Git 仓库」→ 构建命令留空、输出目录留空（纯函数项目）→ 部署
-4. 方式二（CLI 部署）：
-   ```bash
-   npm install -g edgeone
-   edgeone login          # 浏览器授权登录
-   edgeone pages deploy   # 在本项目根目录执行
-   ```
-5. 部署完成后获得 `https://<项目名>.edgeone.app` 地址，即可按上面的用法调用
-6. （可选）控制台绑定自定义域名，国内访问更稳定
+> 仓库地址：https://github.com/consoleaiden/ApiProxy
+> 注意：CLI 直传（`edgeone pages deploy`）创建的项目，默认域名（*.edgeone.dev / *.edgeone.cool）是带时效签名的预览链接，无法公开调用；必须用下面的 Git 集成方式创建项目，或绑定自定义域名。
+
+方式一（Git 集成，推荐）：
+
+1. 注册/登录 [EdgeOne Pages 国际版控制台](https://console.tencentcloud.com/edgeone/pages)
+2. 「创建项目 → 导入 Git 仓库」→ 授权 GitHub → 选择 `consoleaiden/ApiProxy`（main 分支）
+3. 构建配置：**构建命令留空、输出目录留空**（纯边缘函数项目，无需构建）
+4. 部署完成后获得默认生产域名，即可按上面的用法调用
+5. （可选）项目设置 → 域名管理 → 添加自定义域名，按提示加 CNAME 解析（海外区域免备案）
+
+方式二（CLI 直传，适合临时预览）：
+
+```bash
+npm install -g edgeone
+edgeone switch --site global   # 浏览器授权登录国际版
+edgeone pages deploy . -n api-proxy -a overseas --json
+```
+
+返回的 Deploy URL 带 `eo_token` 签名参数，仅限时预览用，不能作为长期 API 端点。
 
 ## 安全配置（强烈建议）
 
